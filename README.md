@@ -44,3 +44,6 @@ Then visit **http://localhost** in your browser.
 ## About
 Created by **Suhan Malabar** as part of my DevOps learning journey.  
 GitHub: [suhano5](https://github.com/suhano5)
+
+
+🛠️ Update (Nov 2025): Improved project documentation and folder cleanup.
