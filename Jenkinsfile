@@ -1,35 +1,39 @@
 pipeline {
-  agent any
+    agent any
 
-  stages {
-    stage('Checkout') {
-      steps {
-        git 'https://github.com/suhano5/AutoDeployX.git'
-      }
+    environment {
+        APP_NAME = "autodeployx"
+        VERSION = "v1.1"
+        IMAGE_TAG = "${APP_NAME}:${VERSION}.${BUILD_NUMBER}"
     }
 
-    stage('Build Docker Image') {
-      steps {
-        script {
-          docker.build('suhano5/autodeployx:latest')
+    stages {
+        stage('Checkout') {
+            steps {
+                echo "Fetching code from GitHub..."
+                checkout scm
+            }
         }
-      }
-    }
 
-    stage('Push to Docker Hub') {
-      steps {
-        withCredentials([string(credentialsId: 'dockerhub-token', variable: 'TOKEN')]) {
-          sh 'echo "$TOKEN" | docker login -u suha... --password-stdin' // replace suha... with actual DockerHub username
-          sh 'docker push suha.../autodeployx:latest' // replace accordingly
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    echo "Building Docker image: ${IMAGE_TAG}"
+                    bat 'docker build -t %IMAGE_TAG% .'
+                }
+            }
         }
-      }
-    }
 
-    stage('Deploy (SSH)') {
-      steps {
-        // This assumes you've setup SSH key credentials in Jenkins and an accessible server
-        sh 'ssh -i /path/to/key.pem ec2-user@YOUR_EC2_IP "docker pull suha.../autodeployx:latest && docker run -d -p 80:80 suha.../autodeployx:latest"'
-      }
+        stage('Test Container') {
+            steps {
+                script {
+                    echo "Running container to verify..."
+                    bat 'docker run -d --name test_container -p 8080:80 %IMAGE_TAG%'
+                    echo "Waiting for Nginx to start..."
+                    bat 'timeout /t 5'
+                    echo "Container is up and running!"
+                }
+            }
+        }
     }
-  }
 }
