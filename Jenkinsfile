@@ -24,7 +24,7 @@ pipeline {
             }
         }
 
-        stage('Test Container') {
+      stage('Test Container') {
     steps {
         script {
             echo "Running container to verify..."
@@ -41,4 +41,5 @@ pipeline {
             echo "Container is up and running!"
         }
     }
+}
 }
