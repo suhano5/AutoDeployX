@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         APP_NAME = "autodeployx"
-        VERSION = "v1.1"
+        VERSION = "v1.2"
         IMAGE_TAG = "${APP_NAME}:${VERSION}.${BUILD_NUMBER}"
     }
 
