@@ -25,15 +25,20 @@ pipeline {
         }
 
         stage('Test Container') {
-            steps {
-                script {
-                    echo "Running container to verify..."
-                    bat "docker run -d --name test_container -p 9090:80 ${IMAGE_TAG}"
-                    echo "Waiting for Nginx to start..."
-                    bat "timeout /t 5"
-                    echo "Container is up and running on port 9090!"
-                }
-            }
+    steps {
+        script {
+            echo "Running container to verify..."
+            // Stop and remove any existing container
+            bat '''
+            docker ps -a -q --filter "name=test_container" | findstr . >nul && (
+                docker stop test_container && docker rm test_container
+            )
+            '''
+            // Run a fresh container
+            bat 'docker run -d --name test_container -p 9090:80 autodeployx:v1.1.${BUILD_NUMBER}'
+            echo "Waiting for Nginx to start..."
+            bat 'ping 127.0.0.1 -n 6 >nul'
+            echo "Container is up and running!"
         }
     }
 }
