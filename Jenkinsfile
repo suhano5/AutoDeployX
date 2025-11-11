@@ -19,7 +19,7 @@ pipeline {
             steps {
                 script {
                     echo "Building Docker image: ${IMAGE_TAG}"
-                    bat 'docker build -t %IMAGE_TAG% .'
+                    bat "docker build -t ${IMAGE_TAG} ."
                 }
             }
         }
@@ -28,10 +28,10 @@ pipeline {
             steps {
                 script {
                     echo "Running container to verify..."
-                    bat 'docker run -d --name test_container -p 8080:80 %IMAGE_TAG%'
+                    bat "docker run -d --name test_container -p 9090:80 ${IMAGE_TAG}"
                     echo "Waiting for Nginx to start..."
-                    bat 'timeout /t 5'
-                    echo "Container is up and running!"
+                    bat "timeout /t 5"
+                    echo "Container is up and running on port 9090!"
                 }
             }
         }
