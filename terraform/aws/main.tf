@@ -7,8 +7,7 @@ resource "aws_instance" "autodeployx" {
   instance_type = var.instance_type
   key_name      = var.key_name
 
-  # user_data will pull Docker image and run it (assumes Docker is available or uses user_data to install)
-  user_data = <<-EOF
+   user_data = <<-EOF
               #!/bin/bash
               yum update -y
               amazon-linux-extras install docker -y
