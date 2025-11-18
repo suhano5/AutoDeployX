@@ -8,6 +8,7 @@ pipeline {
     }
 
     stages {
+
         stage('Checkout') {
             steps {
                 echo "Fetching code from GitHub..."
@@ -28,33 +29,32 @@ pipeline {
             steps {
                 script {
                     echo "Running container to verify..."
-                    // Stop and remove any existing container
+
                     bat '''
                     docker ps -a -q --filter "name=test_container" | findstr . >nul && (
                         docker stop test_container && docker rm test_container
                     )
                     '''
-                    // Run a fresh container
+
                     bat "docker run -d --name test_container -p 9090:80 ${IMAGE_TAG}"
-                    echo "Waiting for Nginx to start..."
+
                     bat 'ping 127.0.0.1 -n 6 >nul'
-                    echo "Container is up and running!"
                 }
             }
         }
-    }
-}
 
-stage('Terraform Apply') {
-    steps {
-        script {
-            bat """
-                cd terraform
-                terraform init
-                terraform plan -out=tfplan
-                terraform apply -auto-approve tfplan
-            """
+        stage('Terraform Apply') {
+            steps {
+                script {
+                    bat """
+                        cd terraform
+                        terraform init
+                        terraform plan -out=tfplan
+                        terraform apply -auto-approve tfplan
+                    """
+                }
+            }
         }
-    }
-}
 
+    }  // <-- CLOSE stages block
+}      // <-- CLOSE pipeline block
