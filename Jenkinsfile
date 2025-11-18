@@ -44,3 +44,17 @@ pipeline {
         }
     }
 }
+
+stage('Terraform Apply') {
+    steps {
+        script {
+            bat """
+                cd terraform
+                terraform init
+                terraform plan -out=tfplan
+                terraform apply -auto-approve tfplan
+            """
+        }
+    }
+}
+
