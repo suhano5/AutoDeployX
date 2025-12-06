@@ -19,7 +19,7 @@ This project helped me understand how different DevOps tools fit together in an 
 
 * Automatically deploys the latest build onto the provisioned server
 
-~The idea was to make a minimal but realistic CI/CD flow that I can reuse for my future projects~
+The idea was to make a minimal but realistic CI/CD flow that I can reuse for my future projects
 
 #### Pipeline Overview
 
@@ -37,7 +37,7 @@ This project helped me understand how different DevOps tools fit together in an 
 
 * Logs and status are visible directly in Jenkins
 
-~This resembles a production workflow but stays lightweight and easy to understand~
+This resembles a production workflow but stays lightweight and easy to understand
 
 ### Tools I Used
 
