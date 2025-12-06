@@ -1,49 +1,117 @@
-# AutoDeployX - CI/CD Automation Project
+### AutoDeployX – CI/CD Pipeline Using Jenkins, Docker & Terraform
+AutoDeployX is a small end-to-end deployment pipeline I built while practicing 
+real-world DevOps workflows.
+It takes a simple application, builds it with Jenkins, packages it into a Dockerimage, and deploys it using Terraform-managed infrastructure.
 
-This is a personal DevOps project I created to practice **CI/CD automation**, **containerization**, and **infrastructure provisioning**.  
-It uses Jenkins, Docker, and Terraform to deploy a simple NGINX-based static web application on AWS EC2 or locally.
+This project helped me understand how different DevOps tools fit together in an actual delivery pipeline rather than learning them individually.
 
-## Tools Used
-- Jenkins (CI/CD pipeline)
-- Docker & Docker Compose (containerization)
-- Terraform (infrastructure as code)
-- AWS EC2 (deployment server)
-- Git & GitHub (version control)
+###  What This Project Does
 
-## Project Overview
-1. The code is version-controlled in GitHub.
-2. Jenkins automatically triggers a build when changes are pushed.
-3. Docker image is built and optionally pushed to Docker Hub.
-4. Terraform handles environment setup (local test or AWS EC2).
-5. The app is deployed automatically using Docker.
+* Pulls application code from GitHub
 
-## Folder Structure
-```
+* Builds the app using Jenkins
+
+* Creates a production-ready Docker image
+
+* Pushes the image to Docker Hub
+
+* Deploys infrastructure using Terraform
+
+* Automatically deploys the latest build onto the provisioned server
+
+~The idea was to make a minimal but realistic CI/CD flow that I can reuse for my future projects~
+
+#### Pipeline Overview
+
+* Developer pushes code → GitHub
+
+* Jenkins triggers a new pipeline run
+
+* Code is built + tested
+
+* A new Docker image is created and pushed to Docker Hub
+
+* Terraform provisions the infrastructure if needed
+
+* Application is deployed automatically on the target VM or container platform
+
+* Logs and status are visible directly in Jenkins
+
+~This resembles a production workflow but stays lightweight and easy to understand~
+
+### Tools I Used
+
+
+  Tool            Why I Used It                                             
+
+* Jenkins *     Automates the build → test → deploy stages                
+* Docker *      Packages the application consistently for any environment 
+* Terraform *   Manages cloud infrastructure cleanly and repeatably       
+* GitHub*       Version control + webhook trigger for Jenkins    
+
+### Project STructure
+
+CSS 
+
 AutoDeployX/
 ├── Jenkinsfile
 ├── Dockerfile
-├── docker-compose.yml
 ├── terraform/
-│   ├── local/
-│   └── aws/
-├── app/
-│   └── index.html
-```
+│   ├── main.tf
+│   ├── variables.tf
+│   └── outputs.tf
+└── src/
+    └── (application files)
 
-## Local Testing
-To test locally (Windows/macOS/Linux):
-```bash
-docker-compose up --build
-```
-Then visit **http://localhost** in your browser.
+####  How to Run It (Local or Cloud)
 
-## Terraform Setup
-- For local mock setup → navigate to `terraform/local/`
-- For AWS EC2 deployment → navigate to `terraform/aws/` (configure variables before applying)
+### Clone the repository
+bash 
 
-## About
-Created by **Suhan Malabar** as part of my DevOps learning journey.  
-GitHub: [suhano5](https://github.com/suhano5)
+git clone https://github.com/suhano5/AutoDeployX.git
+cd AutoDeployX
 
+### Start Jenkins and configure the pipeline
 
-🛠️ Update (Nov 2025): Improved project documentation and folder cleanup.
+-Add your GitHub credentials
+
+-Set the Docker Hub credentials
+
+-Point the pipeline to your Jenkinsfile
+
+#### Apply TErraform 
+bash
+
+-cd terraform
+-terraform init
+-terraform apply
+
+#### Triggers a Jenkins build
+
+Each commit pushes an updated image and redeploys the app.
+
+### what i learned 
+
+- Writing and debugging Jenkins pipelines
+
+- Connecting GitHub → Jenkins → Docker → Terraform
+
+- Handling environment variables and credentials
+
+- Deploying a simple app in an automated way
+
+- Making the whole flow repeatable and Infrastructure-as-Code driven
+
+#### Future Upgrades
+
+- Add automated rollback strategy
+
+- Implement Prometheus + Grafana monitoring
+
+- Add a staging → production promotion step
+
+- Convert deployment to Kubernetes (K8s)
+
+###  Contributions
+
+- This project is mainly for my own learning, but improvements are welcome.
